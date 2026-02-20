@@ -3,97 +3,124 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FingDB - Gestión de Materias</title>
+    <title>FingDB - Admin</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'><path fill='%2358a6ff' d='M464 48c0-26.5-21.5-48-48-48H96c-26.5 0-48 21.5-48 48v320c0 26.5 21.5 48 48 48h320c26.5 0 48-21.5 48-48V48zm-72 72v96H120V120h272zm-48 64c0-8.8-7.2-16-16-16H152c-8.8 0-16 7.2-16 16v16c0 8.8 7.2 16 16 16h136c8.8 0 16-7.2 16-16v-16zM152 296c0-8.8-7.2-16-16-16H120c-8.8 0-16 7.2-16 16v16c0 8.8 7.2 16 16 16h16c8.8 0 16-7.2 16-16v-16zm80 0c0-8.8-7.2-16-16-16h-16c-8.8 0-16 7.2-16 16v16c0 8.8 7.2 16 16 16h16c8.8 0 16-7.2 16-16v-16zm80 0c0-8.8-7.2-16-16-16h-16c-8.8 0-16 7.2-16 16v16c0 8.8 7.2 16 16 16h16c8.8 0 16-7.2 16-16v-16zm80 0c0-8.8-7.2-16-16-16h-16c-8.8 0-16 7.2-16 16v16c0 8.8 7.2 16 16 16h16c8.8 0 16-7.2 16-16v-16zM152 408c0-8.8-7.2-16-16-16H120c-8.8 0-16 7.2-16 16v16c0 8.8 7.2 16 16 16h16c8.8 0 16-7.2 16-16v-16zm80 0c0-8.8-7.2-16-16-16h-16c-8.8 0-16 7.2-16 16v16c0 8.8 7.2 16 16 16h16c8.8 0 16-7.2 16-16v-16z'/></svg>">
     <style>
+        :root {
+            --bg-primary: #0d1117;
+            --bg-secondary: #161b22;
+            --bg-tertiary: #21262d;
+            --bg-hover: #30363d;
+            --text-primary: #f0f6fc;
+            --text-secondary: #8b949e;
+            --text-muted: #6e7681;
+            --accent: #58a6ff;
+            --accent-bisemestral: #58a6ff;
+            --accent-par: #bc8cff;
+            --accent-impar: #f778ba;
+            --border-color: #30363d;
+            --success: #3fb950;
+            --warning: #d29922;
+            --error: #f85149;
+            --purple: #a78bfa;
+        }
         * { box-sizing: border-box; margin: 0; padding: 0; }
-        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #f5f5f5; padding: 20px; }
+        body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; font-weight: 500; background: var(--bg-primary); color: var(--text-primary); min-height: 100vh; padding: 20px; }
         .container { max-width: 1100px; margin: 0 auto; }
-        h1 { color: #333; margin-bottom: 20px; }
+        h1 { color: var(--text-primary); margin-bottom: 20px; display: flex; align-items: center; gap: 0.5rem; }
         
-        .card { background: white; border-radius: 8px; padding: 20px; margin-bottom: 20px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+        .card { background: var(--bg-secondary); border-radius: 8px; padding: 20px; margin-bottom: 20px; border: 1px solid var(--border-color); }
         
-        .form-row { display: flex; gap: 10px; margin-bottom: 15px; flex-wrap: wrap; }
-        .form-group { flex: 1; min-width: 150px; }
-        .form-group label { display: block; margin-bottom: 5px; font-weight: 500; color: #555; }
-        .form-group input, .form-group select, .form-group textarea { width: 100%; padding: 8px 12px; border: 1px solid #ddd; border-radius: 4px; font-size: 14px; }
-        .form-group textarea { min-height: 80px; resize: vertical; }
+        .form-row { display: flex; gap: 15px; margin-bottom: 20px; flex-wrap: wrap; }
+        .form-group { flex: 1; min-width: 200px; }
+        .form-group label { display: block; margin-bottom: 8px; font-weight: 500; color: var(--text-secondary); font-size: 14px; }
+        .form-group input, .form-group select, .form-group textarea { width: 100%; padding: 10px 14px; border: 1px solid var(--border-color); border-radius: 6px; font-size: 14px; background: var(--bg-primary); color: var(--text-primary); }
+        .form-group textarea { min-height: 100px; resize: vertical; }
+        .form-group input:focus, .form-group select:focus, .form-group textarea:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px rgba(88, 166, 255, 0.1); }
         
-        button { padding: 8px 16px; border: none; border-radius: 4px; cursor: pointer; font-size: 14px; }
-        .btn-primary { background: #2563eb; color: white; }
-        .btn-primary:hover { background: #1d4ed8; }
-        .btn-danger { background: #dc2626; color: white; }
-        .btn-danger:hover { background: #b91c1c; }
-        .btn-secondary { background: #6b7280; color: white; }
-        .btn-secondary:hover { background: #4b5563; }
-        .btn-sm { padding: 4px 8px; font-size: 12px; }
+        button { padding: 10px 20px; border: none; border-radius: 6px; cursor: pointer; font-size: 14px; font-weight: 600; transition: all 0.15s ease; }
+        .btn-primary { background: var(--accent); color: var(--bg-primary); padding: 12px 24px; }
+        .btn-primary:hover { background: #4393eb; transform: translateY(-1px); box-shadow: 0 4px 12px rgba(88, 166, 255, 0.3); }
+        .btn-danger { background: var(--error); color: white; }
+        .btn-danger:hover { background: #d73028; transform: translateY(-1px); }
+        .btn-secondary { background: var(--bg-tertiary); color: var(--text-primary); border: 1px solid var(--border-color); }
+        .btn-secondary:hover { background: var(--bg-hover); transform: translateY(-1px); }
+        .btn-sm { padding: 6px 12px; font-size: 13px; }
         
         table { width: 100%; border-collapse: collapse; }
-        th, td { padding: 12px; text-align: left; border-bottom: 1px solid #eee; }
-        th { background: #f9fafb; font-weight: 600; color: #374151; }
-        tr:hover { background: #f9fafb; }
+        th, td { padding: 12px; text-align: left; border-bottom: 1px solid var(--border-color); }
+        th { background: var(--bg-tertiary); font-weight: 600; color: var(--text-secondary); }
+        tr:hover { background: var(--bg-hover); }
         
         .previas-badge { display: inline-block; padding: 2px 8px; border-radius: 12px; font-size: 12px; margin: 2px; }
-        .previas-aprobado { background: #dbeafe; color: #1e40af; }
-        .previas-exonerado { background: #dcfce7; color: #166534; }
+        .previas-aprobado { background: rgba(88, 166, 255, 0.15); color: var(--accent-bisemestral); }
+        .previas-exonerado { background: rgba(63, 185, 80, 0.15); color: var(--success); }
         
-        .empty { text-align: center; color: #9ca3af; padding: 40px; }
+        .empty { text-align: center; color: var(--text-muted); padding: 40px; }
         .loading { opacity: 0.5; pointer-events: none; }
         
-        .modal { display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5); align-items: center; justify-content: center; z-index: 1000; }
+        .modal { display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.75); align-items: center; justify-content: center; z-index: 1000; backdrop-filter: blur(8px); padding: 20px; }
         .modal.active { display: flex; }
-        .modal-content { background: white; padding: 20px; border-radius: 8px; width: 90%; max-width: 600px; max-height: 90vh; overflow-y: auto; }
-        .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
-        .modal-header h2 { font-size: 18px; }
-        .modal-close { background: none; border: none; font-size: 24px; cursor: pointer; color: #666; }
+        .modal-content { background: var(--bg-secondary); padding: 24px; border-radius: 12px; width: 100%; max-width: 800px; max-height: 90vh; overflow-y: auto; border: 1px solid var(--border-color); scrollbar-width: thin; scrollbar-color: var(--bg-hover) var(--bg-tertiary); }
+        .modal-content::-webkit-scrollbar { width: 8px; }
+        .modal-content::-webkit-scrollbar-track { background: var(--bg-tertiary); border-radius: 4px; }
+        .modal-content::-webkit-scrollbar-thumb { background: var(--bg-hover); border-radius: 4px; }
+        .modal-content::-webkit-scrollbar-thumb:hover { background: var(--text-muted); }
+        .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; padding-bottom: 16px; border-bottom: 1px solid var(--border-color); }
+        .modal-header h2 { font-size: 20px; color: var(--text-primary); font-weight: 600; }
+        .modal-close { background: var(--bg-hover); border: none; font-size: 24px; cursor: pointer; color: var(--text-secondary); width: 36px; height: 36px; border-radius: 8px; display: flex; align-items: center; justify-content: center; transition: all 0.15s ease; }
+        .modal-close:hover { background: var(--error); color: white; transform: scale(1.05); }
         
-        .api-key-section { background: #fff7ed; border: 1px solid #fed7aa; padding: 15px; border-radius: 8px; margin-bottom: 20px; }
-        .api-key-section label { display: block; margin-bottom: 5px; font-weight: 500; color: #9a3412; }
-        .api-key-section input { width: 100%; padding: 8px; border: 1px solid #fed7aa; border-radius: 4px; }
+        .login-section { background: var(--bg-tertiary); border: 1px solid var(--border-color); padding: 15px; border-radius: 8px; margin-bottom: 20px; }
+        .login-section label { display: block; margin-bottom: 5px; font-weight: 500; color: var(--text-secondary); }
+        .login-section input { width: 100%; padding: 8px; border: 1px solid var(--border-color); border-radius: 4px; background: var(--bg-primary); color: var(--text-primary); margin-bottom: 10px; }
+        .login-section .btn-primary { width: 100%; }
+        .login-error { color: var(--error); margin-top: 5px; font-size: 14px; }
         
-        .periodo-bimestral { color: #7c3aed; }
-        .periodo-par { color: #0891b2; }
-        .periodo-impar { color: #ca8a04; }
+        .periodo-bimestral { color: var(--accent-bisemestral); }
+        .periodo-par { color: var(--accent-par); }
+        .periodo-impar { color: var(--accent-impar); }
         
-        .tabs { display: flex; gap: 0; margin-bottom: 20px; border-bottom: 2px solid #e5e7eb; }
-        .tab { padding: 12px 24px; background: none; border: none; cursor: pointer; font-size: 15px; color: #6b7280; border-bottom: 2px solid transparent; margin-bottom: -2px; }
-        .tab:hover { color: #374151; }
-        .tab.active { color: #2563eb; border-bottom-color: #2563eb; font-weight: 500; }
+        .tabs { display: flex; gap: 0; margin-bottom: 20px; border-bottom: 2px solid var(--border-color); }
+        .tab { padding: 12px 24px; background: none; border: none; cursor: pointer; font-size: 15px; color: var(--text-secondary); border-bottom: 2px solid transparent; margin-bottom: -2px; }
+        .tab:hover { color: var(--text-primary); }
+        .tab.active { color: var(--accent); border-bottom-color: var(--accent); font-weight: 500; }
         
         .tab-content { display: none; }
         .tab-content.active { display: block; }
         
         .materias-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 10px; margin-top: 10px; }
-        .materia-checkbox { display: flex; align-items: center; gap: 8px; padding: 8px; border: 1px solid #e5e7eb; border-radius: 4px; cursor: pointer; }
-        .materia-checkbox:hover { background: #f9fafb; }
+        .materia-checkbox { display: flex; align-items: center; gap: 8px; padding: 8px; border: 1px solid var(--border-color); border-radius: 4px; cursor: pointer; background: var(--bg-tertiary); }
+        .materia-checkbox:hover { background: var(--bg-hover); }
         .materia-checkbox input { width: auto; }
         
-        .obligatoria { color: #16a34a; }
-        .opcional { color: #2563eb; }
+        .obligatoria { color: var(--success); }
+        .opcional { color: var(--accent); }
         
         .tag { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 12px; margin-left: 8px; }
-        .tag-obligatoria { background: #dcfce7; color: #166534; }
-        .tag-opcional { background: #dbeafe; color: #1e40af; }
+        .tag-obligatoria { background: rgba(63, 185, 80, 0.15); color: var(--success); }
+        .tag-opcional { background: rgba(88, 166, 255, 0.15); color: var(--accent); }
         
-        .autocomplete-wrapper { position: relative; }
-        .autocomplete-input { width: 100%; padding: 8px 12px; border: 1px solid #ddd; border-radius: 4px; font-size: 14px; }
+        .autocomplete-wrapper { position: relative; margin-bottom: 16px; }
+        .autocomplete-input { width: 100%; padding: 12px 16px; border: 1px solid var(--border-color); border-radius: 6px; font-size: 14px; background: var(--bg-primary); color: var(--text-primary); transition: all 0.15s ease; }
+        .autocomplete-input:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px rgba(88, 166, 255, 0.1); }
         .autocomplete-dropdown { 
             display: none; 
             position: absolute; 
             top: 100%; 
             left: 0; 
             right: 0; 
-            max-height: 200px; 
+            max-height: 250px; 
             overflow-y: auto; 
-            background: white; 
-            border: 1px solid #ddd; 
-            border-radius: 4px; 
+            background: var(--bg-secondary); 
+            border: 1px solid var(--border-color); 
+            border-radius: 6px; 
             z-index: 100;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            box-shadow: 0 4px 6px rgba(0,0,0,0.3);
         }
         .autocomplete-dropdown.active { display: block; }
-        .autocomplete-item { padding: 8px 12px; cursor: pointer; }
-        .autocomplete-item:hover { background: #f9fafb; }
-        .autocomplete-item.selected { background: #dbeafe; color: #1e40af; }
+        .autocomplete-item { padding: 8px 12px; cursor: pointer; color: var(--text-primary); }
+        .autocomplete-item:hover { background: var(--bg-hover); }
         
         .selected-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
         .selected-tag { 
@@ -101,25 +128,35 @@
             align-items: center; 
             gap: 6px; 
             padding: 6px 10px; 
-            background: #e0e7ff; 
-            border: 1px solid #c7d2fe;
+            background: rgba(167, 139, 250, 0.15); 
+            border: 1px solid rgba(167, 139, 250, 0.3);
             border-radius: 6px; 
             font-size: 13px; 
-            color: #3730a3;
+            color: var(--purple);
         }
         .selected-tag button { 
-            background: none; border: none; cursor: pointer; padding: 0; font-size: 16px; line-height: 1; color: #6366f1; 
+            background: none; border: none; cursor: pointer; padding: 0; font-size: 16px; line-height: 1; color: var(--purple); 
         }
-        .selected-tag button:hover { color: #dc2626; }
+        .selected-tag button:hover { color: var(--error); }
+        
+        .back-link { color: var(--accent); text-decoration: none; font-size: 14px; margin-left: 10px; }
+        .back-link:hover { text-decoration: underline; }
+        
+        .status-active { color: var(--success); }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>📚 FingDB - Gestión de Materias</h1>
+        <h1>⚙️ FingDB Admin <a href="/" class="back-link">← Ver Grafo</a></h1>
         
-        <div class="api-key-section">
-            <label>🔑 API Key</label>
-            <input type="password" id="apiKey" placeholder="Ingresa tu API Key" value="dev_api_key_12345">
+        <div class="login-section" id="loginSection">
+            <label>🔑 Iniciar Sesión</label>
+            <div style="display: flex; gap: 10px; margin-top: 5px;">
+                <input type="text" id="loginUsername" placeholder="Usuario">
+                <input type="password" id="loginPassword" placeholder="Contraseña">
+                <button class="btn-primary" onclick="doLogin()">Ingresar</button>
+            </div>
+            <div id="loginError" class="login-error"></div>
         </div>
         
         <div class="tabs">
@@ -354,27 +391,25 @@
                         </select>
                     </div>
                 </div>
-                <div class="form-row">
-                    <div class="form-group">
-                        <label>Previas Aprobadas</label>
-                        <div class="autocomplete-wrapper">
-                            <input type="text" id="editPreviasAprobadoInput" class="autocomplete-input" placeholder="Buscar materia...">
-                            <div class="autocomplete-dropdown" id="editPreviasAprobadoDropdown"></div>
-                            <div class="selected-tags" id="editPreviasAprobadoTags"></div>
-                        </div>
-                        <input type="hidden" name="previas_aprobado" id="editPreviasAprobadoHidden">
+                <div class="form-group" style="flex: 100%;">
+                    <label>Previas Aprobadas</label>
+                    <div class="autocomplete-wrapper">
+                        <input type="text" id="editPreviasAprobadoInput" class="autocomplete-input" placeholder="Buscar materia...">
+                        <div class="autocomplete-dropdown" id="editPreviasAprobadoDropdown"></div>
+                        <div class="selected-tags" id="editPreviasAprobadoTags"></div>
                     </div>
-                    <div class="form-group">
-                        <label>Previas Exoneradas</label>
-                        <div class="autocomplete-wrapper">
-                            <input type="text" id="editPreviasExoneradoInput" class="autocomplete-input" placeholder="Buscar materia...">
-                            <div class="autocomplete-dropdown" id="editPreviasExoneradoDropdown"></div>
-                            <div class="selected-tags" id="editPreviasExoneradoTags"></div>
-                        </div>
-                        <input type="hidden" name="previas_exonerado" id="editPreviasExoneradoHidden">
-                    </div>
+                    <input type="hidden" name="previas_aprobado" id="editPreviasAprobadoHidden">
                 </div>
-                <button type="submit" class="btn-primary">💾 Guardar</button>
+                <div class="form-group" style="flex: 100%;">
+                    <label>Previas Exoneradas</label>
+                    <div class="autocomplete-wrapper">
+                        <input type="text" id="editPreviasExoneradoInput" class="autocomplete-input" placeholder="Buscar materia...">
+                        <div class="autocomplete-dropdown" id="editPreviasExoneradoDropdown"></div>
+                        <div class="selected-tags" id="editPreviasExoneradoTags"></div>
+                    </div>
+                    <input type="hidden" name="previas_exonerado" id="editPreviasExoneradoHidden">
+                </div>
+                <button type="submit" class="btn-primary" style="margin-top: 20px; width: 100%;">💾 Guardar Cambios</button>
             </form>
         </div>
     </div>
@@ -388,33 +423,29 @@
             </div>
             <form id="editCarreraForm">
                 <input type="hidden" name="id" id="editCarreraId">
-                <div class="form-row">
-                    <div class="form-group">
-                        <label>Nombre de la Carrera</label>
-                        <input type="text" name="name" id="editCarreraName" required>
-                    </div>
+                <div class="form-group" style="flex: 100%;">
+                    <label>Nombre de la Carrera</label>
+                    <input type="text" name="name" id="editCarreraName" required>
                 </div>
-                <div class="form-row">
-                    <div class="form-group">
-                        <label>Materias Obligatorias</label>
-                        <div class="autocomplete-wrapper">
-                            <input type="text" id="editCarreraObligatoriasInput" class="autocomplete-input" placeholder="Buscar materia...">
-                            <div class="autocomplete-dropdown" id="editCarreraObligatoriasDropdown"></div>
-                            <div class="selected-tags" id="editCarreraObligatoriasTags"></div>
-                        </div>
-                        <input type="hidden" name="materias_obligatorias" id="editCarreraObligatoriasHidden">
+                <div class="form-group" style="flex: 100%;">
+                    <label>Materias Obligatorias</label>
+                    <div class="autocomplete-wrapper">
+                        <input type="text" id="editCarreraObligatoriasInput" class="autocomplete-input" placeholder="Buscar materia...">
+                        <div class="autocomplete-dropdown" id="editCarreraObligatoriasDropdown"></div>
+                        <div class="selected-tags" id="editCarreraObligatoriasTags"></div>
                     </div>
-                    <div class="form-group">
-                        <label>Materias Opcionales</label>
-                        <div class="autocomplete-wrapper">
-                            <input type="text" id="editCarreraOpcionalesInput" class="autocomplete-input" placeholder="Buscar materia...">
-                            <div class="autocomplete-dropdown" id="editCarreraOpcionalesDropdown"></div>
-                            <div class="selected-tags" id="editCarreraOpcionalesTags"></div>
-                        </div>
-                        <input type="hidden" name="materias_opcionales" id="editCarreraOpcionalesHidden">
-                    </div>
+                    <input type="hidden" name="materias_obligatorias" id="editCarreraObligatoriasHidden">
                 </div>
-                <button type="submit" class="btn-primary">💾 Guardar</button>
+                <div class="form-group" style="flex: 100%;">
+                    <label>Materias Opcionales</label>
+                    <div class="autocomplete-wrapper">
+                        <input type="text" id="editCarreraOpcionalesInput" class="autocomplete-input" placeholder="Buscar materia...">
+                        <div class="autocomplete-dropdown" id="editCarreraOpcionalesDropdown"></div>
+                        <div class="selected-tags" id="editCarreraOpcionalesTags"></div>
+                    </div>
+                    <input type="hidden" name="materias_opcionales" id="editCarreraOpcionalesHidden">
+                </div>
+                <button type="submit" class="btn-primary" style="margin-top: 20px; width: 100%;">💾 Guardar Cambios</button>
             </form>
         </div>
     </div>
@@ -429,39 +460,121 @@
             <form id="editPerfilForm">
                 <input type="hidden" name="id" id="editPerfilId">
                 <input type="hidden" name="carrera_id" id="editPerfilCarreraId">
-                <div class="form-row">
-                    <div class="form-group">
-                        <label>Nombre del Perfil</label>
-                        <input type="text" name="name" id="editPerfilName" required>
-                    </div>
+                <div class="form-group" style="flex: 100%;">
+                    <label>Nombre del Perfil</label>
+                    <input type="text" name="name" id="editPerfilName" required>
                 </div>
-                <div class="form-row">
-                    <div class="form-group">
-                        <label>Materias Obligatorias del Perfil</label>
-                        <div class="autocomplete-wrapper">
-                            <input type="text" id="editPerfilObligatoriasInput" class="autocomplete-input" placeholder="Buscar materia...">
-                            <div class="autocomplete-dropdown" id="editPerfilObligatoriasDropdown"></div>
-                            <div class="selected-tags" id="editPerfilObligatoriasTags"></div>
-                        </div>
-                        <input type="hidden" name="materias_obligatorias" id="editPerfilObligatoriasHidden">
-                        <small style="color: #6b7280;">Estas materias eran opcionales en la carrera pero son obligatorias en este perfil</small>
+                <div class="form-group" style="flex: 100%;">
+                    <label>Materias Obligatorias del Perfil</label>
+                    <div class="autocomplete-wrapper">
+                        <input type="text" id="editPerfilObligatoriasInput" class="autocomplete-input" placeholder="Buscar materia...">
+                        <div class="autocomplete-dropdown" id="editPerfilObligatoriasDropdown"></div>
+                        <div class="selected-tags" id="editPerfilObligatoriasTags"></div>
                     </div>
+                    <input type="hidden" name="materias_obligatorias" id="editPerfilObligatoriasHidden">
+                    <small style="color: #6b7280; display: block; margin-top: 8px;">Estas materias eran opcionales en la carrera pero son obligatorias en este perfil</small>
                 </div>
-                <button type="submit" class="btn-primary">💾 Guardar</button>
+                <button type="submit" class="btn-primary" style="margin-top: 20px; width: 100%;">💾 Guardar Cambios</button>
+            </form>
+        </div>
+    </div>
+    
+    <!-- Modal de edición instituto -->
+    <div class="modal" id="editInstitutoModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>✏️ Editar Instituto</h2>
+                <button class="modal-close" onclick="closeEditInstitutoModal()">&times;</button>
+            </div>
+            <form id="editInstitutoForm">
+                <input type="hidden" name="id" id="editInstitutoId">
+                <div class="form-group" style="flex: 100%;">
+                    <label>Nombre del Instituto</label>
+                    <input type="text" name="name" id="editInstitutoName" required>
+                </div>
+                <button type="submit" class="btn-primary" style="margin-top: 20px; width: 100%;">💾 Guardar Cambios</button>
             </form>
         </div>
     </div>
 
     <script>
-        const API_KEY = () => document.getElementById('apiKey').value;
         const BASE_URL = '';
+        
+        function getToken() {
+            return localStorage.getItem('access_token') || '';
+        }
         
         function getHeaders() {
             return {
                 'Content-Type': 'application/json',
-                'X-API-Key': API_KEY()
+                'Authorization': 'Bearer ' + getToken()
             };
         }
+        
+        async function checkLoginStatus() {
+            const token = getToken();
+            if (!token) {
+                document.getElementById('loginSection').style.display = 'block';
+                return;
+            }
+            try {
+                const res = await fetch(`${BASE_URL}/auth/verify`, {
+                    headers: { 'Authorization': 'Bearer ' + token }
+                });
+                if (res.ok) {
+                    const data = await res.json();
+                    if (data.valid) {
+                        document.getElementById('loginSection').innerHTML = '<span class="status-active">✓ Sesión activa</span> <button class="btn-secondary" onclick="logout()" style="margin-left: 10px;">Cerrar Sesión</button>';
+                    } else {
+                        localStorage.removeItem('access_token');
+                        document.getElementById('loginSection').style.display = 'block';
+                    }
+                } else {
+                    document.getElementById('loginSection').style.display = 'block';
+                }
+            } catch (e) {
+                document.getElementById('loginSection').style.display = 'block';
+            }
+        }
+        
+        async function doLogin() {
+            const username = document.getElementById('loginUsername').value;
+            const password = document.getElementById('loginPassword').value;
+            const errorEl = document.getElementById('loginError');
+            errorEl.textContent = '';
+            
+            try {
+                const res = await fetch(`${BASE_URL}/auth/login`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ username, password })
+                });
+                if (res.ok) {
+                    const data = await res.json();
+                    localStorage.setItem('access_token', data.access_token);
+                    window.location.reload();
+                } else {
+                    const data = await res.json();
+                    errorEl.textContent = data.detail || 'Error al iniciar sesión';
+                }
+            } catch (e) {
+                errorEl.textContent = 'Error de conexión';
+            }
+        }
+        
+        async function logout() {
+            const token = getToken();
+            if (token) {
+                await fetch(`${BASE_URL}/auth/logout`, {
+                    method: 'POST',
+                    headers: { 'Authorization': 'Bearer ' + token }
+                });
+            }
+            localStorage.removeItem('access_token');
+            window.location.reload();
+        }
+        
+        checkLoginStatus();
         
         function removeAccents(str) {
             if (!str) return '';
@@ -1186,20 +1299,34 @@
         });
         
         function openEditInstituto(id, name) {
-            const newName = prompt('Nombre del Instituto:', name);
-            if (newName === null || newName.trim() === '') return;
-            
-            fetch(`${BASE_URL}/institutos/${id}`, {
-                method: 'PATCH',
-                headers: getHeaders(),
-                body: JSON.stringify({ name: newName.trim() })
-            })
-            .then(res => {
-                if (!res.ok) throw new Error('Error actualizando');
-                loadInstitutos();
-            })
-            .catch(e => alert('Error: ' + e.message));
+            document.getElementById('editInstitutoId').value = id;
+            document.getElementById('editInstitutoName').value = name;
+            document.getElementById('editInstitutoModal').classList.add('active');
         }
+        
+        function closeEditInstitutoModal() {
+            document.getElementById('editInstitutoModal').classList.remove('active');
+        }
+        
+        document.getElementById('editInstitutoForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const id = document.getElementById('editInstitutoId').value;
+            const name = document.getElementById('editInstitutoName').value.trim();
+            if (!name) return;
+            
+            try {
+                const res = await fetch(`${BASE_URL}/institutos/${id}`, {
+                    method: 'PATCH',
+                    headers: getHeaders(),
+                    body: JSON.stringify({ name })
+                });
+                if (!res.ok) throw new Error('Error actualizando');
+                closeEditInstitutoModal();
+                loadInstitutos();
+            } catch (e) {
+                alert('Error: ' + e.message);
+            }
+        });
         
         async function deleteInstituto(id) {
             if (!confirm('¿Eliminar este instituto? Las materias asociadas también se eliminarán.')) return;
