@@ -285,6 +285,7 @@ const API_CONFIG = {
           const nodes = materiasList.map(m => ({
             id: m.id,
             name: m.name,
+            codigo: m.codigo || null,
             periodo: m.periodo,
             creditos: m.creditos || 0,
             instituto_id: m.instituto_id,
@@ -744,6 +745,7 @@ const API_CONFIG = {
             const nodesAll = materiasList.map(m => ({
               id: m.id,
               name: m.name,
+              codigo: m.codigo || null,
               periodo: m.periodo,
               creditos: m.creditos || 0,
               instituto_id: m.instituto_id,
