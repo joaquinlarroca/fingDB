@@ -59,6 +59,7 @@ class Materia(Base):
 
     id: Mapped[int] = mapped_column(Integer, primary_key=True)
     name: Mapped[str] = mapped_column(String(255), nullable=False)
+    codigo: Mapped[Optional[str]] = mapped_column(String(50), nullable=True)
     periodo: Mapped[PeriodoEnum] = mapped_column(
         SAEnum(PeriodoEnum, name="periodo_enum"),
         nullable=False,
