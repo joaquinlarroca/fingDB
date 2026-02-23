@@ -85,12 +85,18 @@ async def serve_graph_js(request: Request):
 async def root(request: Request):
     path = request.url.path
 
-    if path == "/" or path == "" or path.startswith("/index") or path == "/graph":
+    if path == "/graph.js" or path.startswith("/graph.js?"):
+        return FileResponse(
+            "app/templates/graph.js",
+            media_type="application/javascript",
+            headers={"Cache-Control": "no-cache, no-store, must-revalidate"},
+        )
+    elif path == "/" or path == "" or path.startswith("/index") or path == "/graph":
         return FileResponse("app/templates/graph.html")
-    elif path == "/admin":
+    elif path == "/admin" or path.startswith("/admin/"):
         return FileResponse("app/templates/index.html")
-    elif path.startswith("/admin/"):
-        return FileResponse("app/templates/index.html")
+    elif path.startswith("/static/"):
+        return FileResponse("app/templates/graph.html")
     else:
         return FileResponse("app/templates/graph.html")
 
@@ -99,7 +105,7 @@ async def root(request: Request):
 async def catch_all(full_path: str, request: Request):
     path = request.url.path
 
-    if path == "/graph.js":
+    if path == "/graph.js" or path.startswith("/graph.js?"):
         return FileResponse(
             "app/templates/graph.js",
             media_type="application/javascript",
