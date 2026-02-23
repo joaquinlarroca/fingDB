@@ -67,6 +67,7 @@ async def create_materia(
     data = await get_form_data(request)
 
     name = data.get("name")
+    codigo = data.get("codigo") or None
     periodo = data.get("periodo")
     creditos = int(data.get("creditos", 0) or 0)
     instituto_id = int(data.get("instituto_id", 0) or 0)
@@ -77,7 +78,11 @@ async def create_materia(
         raise HTTPException(400, "instituto_id is required")
 
     nueva = Materia(
-        name=name, periodo=periodo, creditos=creditos, instituto_id=instituto_id
+        name=name,
+        codigo=codigo,
+        periodo=periodo,
+        creditos=creditos,
+        instituto_id=instituto_id,
     )
     db.add(nueva)
     await db.flush()
@@ -123,6 +128,7 @@ async def update_materia(
     data = await get_form_data(request)
 
     name: str = data.get("name") or ""
+    codigo: str = data.get("codigo") or None
     periodo: str = data.get("periodo") or "bisemestral"
     creditos: int = int(data.get("creditos", 0) or 0)
     instituto_id: int = int(data.get("instituto_id", 0) or 0)
@@ -137,6 +143,7 @@ async def update_materia(
 
     if name:
         materia.name = name
+    materia.codigo = codigo
     if periodo:
         materia.periodo = periodo
     materia.creditos = creditos

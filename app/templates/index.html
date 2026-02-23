@@ -236,12 +236,13 @@
                             <th>Código</th>
                             <th>Período</th>
                             <th>Créditos</th>
+                            <th>Instituto</th>
                             <th>Previas</th>
                             <th>Acciones</th>
                         </tr>
                     </thead>
                     <tbody id="materiasList">
-                        <tr><td colspan="6" class="empty">Cargando...</td></tr>
+                        <tr><td colspan="8" class="empty">Cargando...</td></tr>
                     </tbody>
                 </table>
             </div>
@@ -791,7 +792,7 @@
         function renderMaterias(materias) {
             if (materias.length === 0) {
                 document.getElementById('materiasList').innerHTML = 
-                    '<tr><td colspan="6" class="empty">No hay materias</td></tr>';
+                    '<tr><td colspan="8" class="empty">No hay materias</td></tr>';
                 return;
             }
             
