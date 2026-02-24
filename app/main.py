@@ -1,3 +1,17 @@
+"""
+fingDB - Main Application Entry Point
+
+This is the main entry point for the fingDB API. It configures the FastAPI
+application, sets up middleware, and registers all API routers.
+
+Key Concepts:
+- FastAPI: Modern Python web framework for building APIs
+- Async/Await: Python's way of handling asynchronous operations
+- Lifespan: Manages application startup and shutdown
+- CORS: Cross-Origin Resource Sharing for browser requests
+- Routers: Modular way to organize API endpoints
+"""
+
 from fastapi import FastAPI, Request
 from fastapi.responses import FileResponse, HTMLResponse, Response
 from fastapi.middleware.cors import CORSMiddleware
@@ -15,12 +29,30 @@ from app.core.database import engine, Base
 from app.auth import login, logout, verify_token, LoginRequest
 
 
+# ============================================================================
+# APPLICATION LIFECYCLE
+# ============================================================================
+
+
 @asynccontextmanager
 async def lifespan(app: FastAPI):
+    """
+    Manage application startup and shutdown.
+
+    This runs when the application starts:
+    - Creates all database tables if they don't exist
+
+    The 'yield' marks where the application runs.
+    Any code after yield would run on shutdown.
+    """
     async with engine.begin() as conn:
         await conn.run_sync(Base.metadata.create_all)
     yield
 
+
+# ============================================================================
+# APPLICATION SETUP
+# ============================================================================
 
 app = FastAPI(
     title="FingDB API",
@@ -28,6 +60,9 @@ app = FastAPI(
     version="1.0.0",
 )
 
+# CORS middleware allows browsers to make requests to this API
+# In production, you'd want to restrict this to specific origins
+# For development, we allow all origins
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
@@ -36,19 +71,40 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-app.include_router(materia_router)
-app.include_router(carrera_router)
-app.include_router(perfil_router)
-app.include_router(instituto_router)
+
+# ============================================================================
+# ROUTER REGISTRATION
+# ============================================================================
+
+# Include all the API routers for different resources
+app.include_router(materia_router)  # Course endpoints
+app.include_router(carrera_router)  # Career endpoints
+app.include_router(perfil_router)  # Profile endpoints
+app.include_router(instituto_router)  # Institute endpoints
+
+
+# ============================================================================
+# AUTHENTICATION ENDPOINTS
+# ============================================================================
 
 
 @app.post("/auth/login")
 async def auth_login(request: Request, login_data: LoginRequest):
+    """
+    Handle user login.
+
+    Returns a token if credentials are valid.
+    """
     return await login(request, login_data)
 
 
 @app.post("/auth/logout")
 async def auth_logout(request: Request):
+    """
+    Handle user logout.
+
+    Invalidates the session token.
+    """
     auth_header = request.headers.get("Authorization", "")
     token = (
         auth_header.replace("Bearer ", "")
@@ -60,6 +116,11 @@ async def auth_logout(request: Request):
 
 @app.get("/auth/verify")
 async def auth_verify(request: Request):
+    """
+    Verify if a token is valid.
+
+    Used by frontend to check if user is logged in.
+    """
     auth_header = request.headers.get("Authorization", "")
     token = (
         auth_header.replace("Bearer ", "")
@@ -72,8 +133,18 @@ async def auth_verify(request: Request):
     return {"valid": False}
 
 
+# ============================================================================
+# FRONTEND SERVING (SPA ROUTING)
+# ============================================================================
+
+
 @app.get("/graph.js")
 async def serve_graph_js(request: Request):
+    """
+    Serve the JavaScript for the prerequisite graph visualization.
+
+    This is used by the frontend to render the course prerequisite graph.
+    """
     return FileResponse(
         "app/templates/graph.js",
         media_type="application/javascript",
@@ -83,6 +154,15 @@ async def serve_graph_js(request: Request):
 
 @app.get("/")
 async def root(request: Request):
+    """
+    Serve the appropriate frontend based on the requested path.
+
+    This implements SPA (Single Page Application) routing:
+    - / -> graph visualization
+    - /admin -> admin panel
+    - /static -> static files
+    - Everything else -> main graph page
+    """
     path = request.url.path
 
     if path == "/graph.js" or path.startswith("/graph.js?"):
@@ -103,6 +183,12 @@ async def root(request: Request):
 
 @app.get("/{full_path:path}")
 async def catch_all(full_path: str, request: Request):
+    """
+    Catch-all route for SPA routing.
+
+    Any path not matched by other routes falls through here.
+    We serve the main graph.html which handles routing on the client side.
+    """
     path = request.url.path
 
     if path == "/graph.js" or path.startswith("/graph.js?"):
